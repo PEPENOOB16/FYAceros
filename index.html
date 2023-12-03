@@ -75,35 +75,48 @@
   </section>
 
   <script type="text/javascript">
-      //javascript para el slider video
-      const btns = document.querySelectorAll(".nav-btn");
-      const slides = document.querySelectorAll(".video-slide");
-      const contents = document.querySelectorAll(".content");
-
-      var sliderNav = function(manual){
-          btns.forEach((btn) => {
-              btn.classList.remove("active")
-          });
-
-          slides.forEach((slide) => {
-              slide.classList.remove("active")
-          });
-
-          contents.forEach((content) => {
-              content.classList.remove("active")
-          });
-
-          btns[manual].classList.add("active");
-          slides[manual].classList.add("active");
-          contents[manual].classList.add("active");
-      }
-
-      btns.forEach((btn, i) => {
-          btn.addEventListener("click", () => {
-              sliderNav(i);
-          });
-      });
+    const btns = document.querySelectorAll(".nav-btn");
+    const slides = document.querySelectorAll(".video-slide");
+    const contents = document.querySelectorAll(".content");
+  
+    var sliderNav = function(manual){
+        btns.forEach((btn) => {
+            btn.classList.remove("active");
+        });
+  
+        slides.forEach((slide) => {
+            slide.classList.remove("active");
+        });
+  
+        contents.forEach((content) => {
+            content.classList.remove("active");
+        });
+  
+        btns[manual].classList.add("active");
+        slides[manual].classList.add("active");
+        contents[manual].classList.add("active");
+    }
+  
+    btns.forEach((btn, i) => {
+        btn.addEventListener("click", () => {
+            sliderNav(i);
+            // Reinicia el temporizador cuando se hace clic manualmente
+            clearInterval(automaticSlide);
+            automaticSlide = setInterval(() => {
+              slideIndex = (slideIndex + 1) % btns.length;
+              sliderNav(slideIndex);
+            }, 5000);
+        });
+    });
+  
+    // Iniciar el slider automáticamente
+    var slideIndex = 0;
+    var automaticSlide = setInterval(() => {
+      slideIndex = (slideIndex + 1) % btns.length;
+      sliderNav(slideIndex);
+    }, 5000);
   </script>
+  
       
       <a name="nosotros"></a>
     <section class="about" id="about">
@@ -375,10 +388,35 @@
             <a href="#">Terminos y Condiciones</a>
             <a href="#" onclick="event.preventDefault(); openForm();">Contactanos</a>
             <script>
-              function openForm() {
-                  document.getElementById('form-popup').style.display = 'block';
-              }
+   function openForm() {
+    document.getElementById('overlay').style.display = 'block'; // Mostrar el fondo opaco
+    document.getElementById('form-popup').style.display = 'block'; // Mostrar el formulario
+}
+
+
               </script>
+
+<style>
+  /* Estilo para el fondo opaco */
+  .overlay {
+    position: fixed; /* Posicionamiento fijo en toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Inicialmente oculto */
+  }
+
+  /* Estilos para el formulario */
+  #form-popup {
+    position: fixed; /* Posicionamiento fijo */
+    top: 50%; /* Centrado vertical */
+    left: 50%; /* Centrado horizontal */
+    transform: translate(-50%, -50%); /* Ajuste fino para centrar exactamente */
+    /* Agrega aquí más estilos para tu formulario */
+  }
+</style>
+
           </div>
         </div>
       </div>
